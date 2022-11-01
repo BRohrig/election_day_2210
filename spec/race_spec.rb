@@ -26,5 +26,41 @@ RSpec.describe Race do
     expect(race.candidates).to eq([candidate1, candidate2])
   end
 
+  it 'has an #open? method that returns true by default' do
+    expect(race.open?).to be true
+  end
+
+  it 'has a method to close the race which will impact the open? method' do
+    race.close!
+    expect(race.open?).to be false
+  end
+
+  it 'has a winner method that returns false if race is open, if close will return candidate with most votes' do
+    expect(race.winner).to be false
+    candidate1 = race.register_candidate!({name: "Diana D", party: :democrat})
+    candidate2 = race.register_candidate!({name: "Roberto R", party: :republican})
+    3.times {candidate1.vote_for!}
+    4.times {candidate2.vote_for!}
+    expect(race.winner).to be false
+    race.close!
+    
+    expect(race.winner).to eq([candidate2])
+    expect(race.tie?).to be false
+  end
+
+  it 'has a method to evaluate if there is a tie' do
+    candidate1 = race.register_candidate!({name: "Diana D", party: :democrat})
+    candidate2 = race.register_candidate!({name: "Roberto R", party: :republican})
+    4.times {candidate1.vote_for!}
+    4.times {candidate2.vote_for!}
+    race.close!
+
+    expect(race.tie?).to be true
+    expect(race.winner).to eq([candidate1, candidate2])
+
+  end
+
+  
+
 
 end
