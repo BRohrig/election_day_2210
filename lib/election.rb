@@ -29,4 +29,10 @@ class Election
       return candidate.votes if candidate == selected_candidate
     end
   end
+
+  def winners
+    @races.map do |race|
+      race.winner if !race.open?
+    end.flatten
+  end
 end

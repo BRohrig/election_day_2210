@@ -57,7 +57,27 @@ RSpec.describe Election do
                                         "Ida I" => 6})
   end
 
+  it 'has a method to return the winners of the elections' do
+    election.add_race(race1)
+    election.add_race(race2)
+    candidate1
+    candidate2
+    candidate3
+    candidate4
+    candidate5
+    4.times {candidate1.vote_for!}
+    1.times {candidate2.vote_for!}
+    6.times {candidate3.vote_for!}
+    6.times {candidate4.vote_for!}
+    6.times {candidate5.vote_for!}
+    race1.close!
+    race2.close!
 
+    expect(race1.winner).to eq([candidate1])
+    expect(race2.winner).to eq([candidate3, candidate4, candidate5])
+    expect(election.winners).to eq([candidate1, candidate3, candidate4, candidate5])
+
+  end
 
 
 end
